@@ -1,7 +1,0 @@
-Step,Row,Column,Heading,Left Wall,Front Wall,Right Wall
-0,4,7,W,Y,Y,Y
-1,4,7,N,Y,Y,N
-2,4,7,E,Y,N,Y
-3,4,8,E,N,Y,Y
-4,4,8,N,N,N,Y
-5,3,8,N,N,N,Y
