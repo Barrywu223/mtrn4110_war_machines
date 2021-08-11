@@ -39,7 +39,7 @@
 ###
 ### ---- C++ Sources ----
 ### if your program uses several C++ source files:
-CXX_SOURCES = MTRN4110_PhaseA.cpp PathPlanner.cpp main.cpp
+CXX_SOURCES = CustomRobot.cpp PathRobot.cpp PathPlanner.cpp main.cpp
 ###
 ### ---- Compilation options ----
 ### if special compilation flags are necessary:
