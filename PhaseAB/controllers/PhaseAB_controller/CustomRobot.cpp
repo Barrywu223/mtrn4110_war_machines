@@ -16,7 +16,6 @@ CustomRobot::CustomRobot(Robot *r) {
         ds[i]->enable(TIME_STEP);
     }
 
-    // fdist->enable(TIMESTEP);
     compass = r->getCompass("compass");
     compass->enable(TIME_STEP);
     // Run motors in velocity control
@@ -44,7 +43,7 @@ void CustomRobot::turnLeft() {
 
 void CustomRobot::turnRight() {
     leftMotor->setVelocity(MaxRotationSpeed);
-    rightMotor->setVelocity(-MaxRotationSpeed);\
+    rightMotor->setVelocity(-MaxRotationSpeed);
     robot->step(1400);
     angleCorrection();
     linearCorrection();
@@ -70,8 +69,7 @@ bool CustomRobot::forwardWall() {
 
 void CustomRobot::angleCorrection() {
     int bias = 1;
-    int duration = 50; 
-    // Detect current heading to avoid passing through classes
+    // Detect current heading 
     const double *headings = compass->getValues();
     double rad = atan2(headings[0], headings[2]);
     double bearing = (rad - 1.5708) / Pi * 180.0;
@@ -81,110 +79,29 @@ void CustomRobot::angleCorrection() {
     else if (bearing > 170 && bearing < 190) heading = 'S';
     else if (bearing > 260 && bearing < 280) heading = 'W';
 
-    // Do angle correction
-    switch (heading)
-    {
-    case 'N':
-        while (auto compassResults = compass->getValues())
-        {
-            double ns = compassResults[0] * 10000;
-            double we = compassResults[2] * 10000;
-            if (ns < 10000 - bias || ns > 10000 + bias)
-            {
-                if (we > 0)
-                { // go right
-                    leftMotor->setVelocity(0.05 * MaxRotationSpeed);
-                    rightMotor->setVelocity(-0.05 * MaxRotationSpeed);
-                    robot->step(duration);
-                }
-                else
-                { // go left
-                    leftMotor->setVelocity(-0.05 * MaxRotationSpeed);
-                    rightMotor->setVelocity(0.05 * MaxRotationSpeed);
-                    robot->step(duration);
-                }
+    // Apply correction
+    while (auto compassResults = compass->getValues()) {
+        // Select correct values for correction
+        double ns = compassResults[0] * 10000, we = compassResults[2] * 10000;
+        double check = ns, condition = we; int weight = 1; bool gt = false;
+        if      (heading == 'N') {check = ns; condition = we; weight = 1; gt = true;}
+        else if (heading == 'S') {check = ns; condition = we; weight = -1; gt = false;}
+        else if (heading == 'W') {check = we; condition = ns; weight = 1; gt = false;}
+        else if (heading == 'E') {check = we; condition = ns; weight = -1; gt = true;}
+        // Move vehicle within acceptable tolerance
+        if (check < weight * 10000 - bias || check > weight * 10000 + bias) {
+            if ((gt && condition > 0) || (!gt && condition < 0)) { // go right
+                leftMotor->setVelocity(0.05 * MaxRotationSpeed);
+                rightMotor->setVelocity(-0.05 * MaxRotationSpeed);
+                robot->step(TIME_STEP);
             }
-            else
-            {
-                break;
+            else { // go left
+                leftMotor->setVelocity(-0.05 * MaxRotationSpeed);
+                rightMotor->setVelocity(0.05 * MaxRotationSpeed);
+                robot->step(TIME_STEP);
             }
         }
-        break;
-    case 'S':
-        while (auto compassResults = compass->getValues())
-        {
-            double ns = compassResults[0] * 10000;
-            double we = compassResults[2] * 10000;
-            if (ns < -10000 - bias || ns > -10000 + bias)
-            {
-                if (we < 0)
-                {
-                    leftMotor->setVelocity(0.05 * MaxRotationSpeed);
-                    rightMotor->setVelocity(-0.05 * MaxRotationSpeed);
-                    robot->step(duration);
-                }
-                else
-                {
-                    leftMotor->setVelocity(-0.05 * MaxRotationSpeed);
-                    rightMotor->setVelocity(0.05 * MaxRotationSpeed);
-                    robot->step(duration);
-                }
-            }
-            else
-            {
-                break;
-            }
-        }
-        break;
-    case 'W':
-        while (auto compassResults = compass->getValues())
-        {
-            double ns = compassResults[0] * 10000;
-            double we = compassResults[2] * 10000;
-            if (we < 10000 - bias || we > 10000 + bias)
-            {
-                if (ns < 0)
-                {
-                    leftMotor->setVelocity(0.05 * MaxRotationSpeed);
-                    rightMotor->setVelocity(-0.05 * MaxRotationSpeed);
-                    robot->step(duration);
-                }
-                else
-                {
-                    leftMotor->setVelocity(-0.05 * MaxRotationSpeed);
-                    rightMotor->setVelocity(0.05 * MaxRotationSpeed);
-                    robot->step(duration);
-                }
-            }
-            else
-            {
-                break;
-            }
-        }
-        break;
-    case 'E':
-        while (auto compassResults = compass->getValues())
-        {
-            double ns = compassResults[0] * 10000;
-            double we = compassResults[2] * 10000;
-            if (we < -10000 - bias || we > -10000 + bias)
-            {
-                if (ns > 0)
-                {
-                    leftMotor->setVelocity(0.05 * MaxRotationSpeed);
-                    rightMotor->setVelocity(-0.05 * MaxRotationSpeed);
-                    robot->step(duration);
-                }
-                else
-                {
-                    leftMotor->setVelocity(-0.05 * MaxRotationSpeed);
-                    rightMotor->setVelocity(0.05 * MaxRotationSpeed);
-                    robot->step(duration);
-                }
-            }
-            else break;
-        }
-        break;
+        else break;
     }
 }
 
