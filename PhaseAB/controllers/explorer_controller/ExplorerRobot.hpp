@@ -22,6 +22,8 @@ typedef struct _Cell Cell;
 class Map {
 
 private:
+    int robot_x, robot_y;
+    char robot_heading;
     std::vector<std::vector<Cell>> map;
 
 public:
