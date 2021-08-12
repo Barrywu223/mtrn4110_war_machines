@@ -9,33 +9,40 @@ Map::Map() {
 Map::~Map() {}
 
 void Map::updateMap(int x, int y, char heading, bool l, bool f, bool r) {
-    if      (heading == 'N') {map[x][y].left = l; map[x-1][y].up = f; map[x][y].right = r;}
-    else if (heading == 'S') {map[x][y].right = l; map[x-1][y].down = f; map[x][y].left = r;}
-    else if (heading == 'E') {map[x-1][y].up = l; map[x][y].right = f; map[x-1][y].down = r;}
-    else if (heading == 'W') {map[x-1][y].down = l; map[x][y].left = f; map[x-1][y].up = r;}
+    if      (heading == 'N') {map[x][y].left = l; map[x][y].up = f; map[x][y].right = r;}
+    else if (heading == 'S') {map[x][y].right = l; map[x][y].down = f; map[x][y].left = r;}
+    else if (heading == 'E') {map[x][y].up = l; map[x][y].right = f; map[x][y].down = r;}
+    else if (heading == 'W') {map[x][y].down = l; map[x][y].left = f; map[x][y].up = r;}
     map[x][y].explored = true;
     robot_x = x; robot_y = y; robot_heading = heading;
 }
 
-void Map::printFullMap() {
-    for (int x = 0; x < MAPSIZE_X; x++) printf((map[x][0].up) ? " ---" : "    ");
-    printf("\n");
+std::string Map::fullMapString() {
+    std::stringstream mapString;
+    for (int x = 0; x < MAPSIZE_X; x++) mapString << ((map[x][0].up) ? " ---" : "    ");
+    mapString << "\n";
     for (int y = 1; y < MAPSIZE_Y-1; y++) {
-        printf((map[0][y].left) ? "|" : " ");
-        for (int x = 1; x < MAPSIZE_X-1; x++) {
+        for (int x = 0; x < MAPSIZE_X; x++) {
+            if (x == 0) mapString << ((map[0][y].left) ? "|" : " ");
             if (x == robot_x && y == robot_y) {
-                if      (robot_heading == 'N') printf(" ^ ");
-                else if (robot_heading == 'S') printf(" v ");
-                else if (robot_heading == 'E') printf(" > ");
-                else if (robot_heading == 'W') printf(" < ");
+                if      (robot_heading == 'N') mapString << " ^ ";
+                else if (robot_heading == 'S') mapString << " v ";
+                else if (robot_heading == 'E') mapString << " > ";
+                else if (robot_heading == 'W') mapString << " < ";
             }
-            else printf((map[x][y].explored) ? " 1 " : " 0 ");
-            printf((map[x][y].right || map[x+1][y].left) ? "|" : " ");
-        }
-        printf("\n");
-        for (int x = 0; x < MAPSIZE_X; x++) printf((map[x][y].down || map[x][y+1].up) ? " ---" : "    ");
-        printf("\n");
+            else mapString << ((map[x][y].explored) ? " 1 " : " 0 ");
+            if (x == MAPSIZE_X-1) mapString << ((map[MAPSIZE_X-1][y].right) ? "|" : " ");
+            else mapString << ((map[x][y].right || map[x+1][y].left) ? "|" : " ");
+        }       
+        mapString << "\n";
+        for (int x = 0; x < MAPSIZE_X; x++) mapString << ((map[x][y].down || map[x][y+1].up) ? " ---" : "    ");
+        mapString << "\n";
     }
+    return mapString.str();
+}
+
+void Map::printFullMap() {
+    cout << fullMapString();
 }
 
 ExplorerRobot::ExplorerRobot(Robot* r) : CustomRobot(r) {
@@ -51,8 +58,7 @@ void ExplorerRobot::updateMap() {
 }
 
 void ExplorerRobot::explore() {
-    
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 30; i++) {
         updateMap();
         printf("%d %d %d\n", leftWall(), forwardWall(), rightWall());
         printf("%c %d %d\n", getCurrentHeading(), x, y);
