@@ -1,46 +1,29 @@
 
 #include <PathPlanner.hpp>
 
-PathPlanner::PathPlanner() {
-    // Open file to read in map
-  std::ifstream file;
-  file.open(mapPath);
-  if (!file.is_open()) {
-    std::cout << "Error: could not find map file" << mapPath; 
-    exit(1);
-  }
-  // Open file to output data
-  outputFile.open(outputPath);
-  if (!outputFile.is_open()) {
-    std::cout << "Error: could not find map file" << outputPath; 
-    exit(1);
-  }
-  std::cout << header << "Reading in map from "<< mapPath << "..." << std::endl;
-  outputFile << header << "Reading in map from "<< mapPath << "..." << std::endl;
+PathPlanner::PathPlanner(std::string map) {
+  std::stringstream mapstream; mapstream.str(map);
   std::string buffer;
-  while (std::getline(file, buffer)) {
-    std::cout << header << buffer << std::endl;
+  while (std::getline(mapstream, buffer)) {
     rawMap.push_back(buffer);
   }
-  file.close();
-  std::cout << header << "Map read in!" << std::endl;
-  outputFile << header << "Map read in!" << std::endl;
 }
 
-PathPlanner::~PathPlanner() {outputFile.close();}
+PathPlanner::~PathPlanner() {}
 
 void PathPlanner::run() {
   findBestPath();
 }
 
 // Runs all functions in correct order to get path
-void PathPlanner::findBestPath() {
+std::string PathPlanner::findBestPath() {
+  // FILE* output_file = std::freopen(outputPath.c_str(), "w", stdout);
   findTargets();
   findDistMap();
   findPosPaths();
-  printAllMaps();
-  findShortestPath();
-  writeToFile();
+  // printAllMaps();
+  return findShortestPath();
+  // writeToFile();
 }
 
 // PRIVATE FUNCTIONS
@@ -92,7 +75,7 @@ bool PathPlanner::getR(int x, int y) {
 // Computes a Dijkstra style distance map
 #define INF 0x3FFFFFFF
 void PathPlanner::findDistMap() {
-  dist = std::vector<std::vector<int>> (5, std::vector<int> (9, INF));
+  dist = std::vector<std::vector<int>> (9, std::vector<int> (17, INF));
   dist[targetX][targetY] = 0;
   
   // Generates the distance map
@@ -102,10 +85,7 @@ void PathPlanner::findDistMap() {
   while(!pq.empty()) {
     auto elem = pq[0]; pq.erase(pq.begin());
     int currX = elem.first.first, currY = elem.first.second, currDist = elem.second;
-    if (!getU(currX, currY) && currDist < dist[currX-1][currY]) {
-      dist[currX-1][currY] = currDist+1;
-      pq.push_back(std::make_pair(std::make_pair(currX-1, currY), currDist+1));
-    }
+    // if (currX == initialX && currY == initialY) return;
     if (!getD(currX, currY) && currDist < dist[currX+1][currY]) {
       dist[currX+1][currY] = currDist+1;
       pq.push_back(std::make_pair(std::make_pair(currX+1, currY), currDist+1));
@@ -113,6 +93,10 @@ void PathPlanner::findDistMap() {
     if (!getL(currX, currY) && currDist < dist[currX][currY-1]) {
       dist[currX][currY-1] = currDist+1;
       pq.push_back(std::make_pair(std::make_pair(currX, currY-1), currDist+1));
+    }
+    if (!getU(currX, currY) && currDist < dist[currX-1][currY]) {
+      dist[currX-1][currY] = currDist+1;
+      pq.push_back(std::make_pair(std::make_pair(currX-1, currY), currDist+1));
     }
     if (!getR(currX, currY) && currDist < dist[currX][currY+1]) {
       dist[currX][currY+1] = currDist+1;
@@ -137,6 +121,11 @@ void PathPlanner::findPosPaths() {
       pq.push_back(std::make_pair(std::make_pair(currX+1, currY), (branch) ? currPath : whichPath));
       branch = true;
     }
+    if (!getL(currX, currY) && dist[currX][currY-1] == dist[currX][currY]-1) {
+      if (branch) {posPaths.resize(posPaths.size()+1); posPaths[++currPath] = posPaths[whichPath];}
+      pq.push_back(std::make_pair(std::make_pair(currX, currY-1), (branch) ? currPath : whichPath));
+      branch = true;
+    }
     if (!getU(currX, currY) && dist[currX-1][currY] == dist[currX][currY]-1) {
       if (branch) {posPaths.resize(posPaths.size()+1); posPaths[++currPath] = posPaths[whichPath];}
       pq.push_back(std::make_pair(std::make_pair(currX-1, currY), (branch) ? currPath : whichPath));
@@ -145,11 +134,6 @@ void PathPlanner::findPosPaths() {
     if (!getR(currX, currY) && dist[currX][currY+1] == dist[currX][currY]-1) {
       if (branch) {posPaths.resize(posPaths.size()+1); posPaths[++currPath] = posPaths[whichPath];}
       pq.push_back(std::make_pair(std::make_pair(currX, currY+1), (branch) ? currPath : whichPath));
-      branch = true;
-    }
-    if (!getL(currX, currY) && dist[currX][currY-1] == dist[currX][currY]-1) {
-      if (branch) {posPaths.resize(posPaths.size()+1); posPaths[++currPath] = posPaths[whichPath];}
-      pq.push_back(std::make_pair(std::make_pair(currX, currY-1), (branch) ? currPath : whichPath));
       branch = true;
     }
   }
@@ -164,7 +148,7 @@ std::string PathPlanner::getPathString(int whichPath) {
   pathStr.append(std::to_string(initialY));
   pathStr.append(initialH);
   // "RR" moves deal with when initial pose is facing opposite necessary direction
-  for (std::size_t i = 1; i < path.size(); i++) {
+  for (std::size_t i = 1; i < path.size() && i < 100; i++) {
     int Xmove = path[i].first - path[i-1].first;
     int Ymove = path[i].second - path[i-1].second;
     if (Xmove == 1) {
@@ -213,29 +197,22 @@ void PathPlanner::printPathMap(int whichPath) {
     pathMap[strX][strY] = num[0];
     if (num.length() > 1) pathMap[strX][strY+1] = num[1];
   }
-  for (std::string s: pathMap) {
-    std::cout << header << s << std::endl;
-    outputFile << header << s << std::endl;
-  }
+  for (std::string s: pathMap) std::cout << header << s << std::endl;
 }
 
 // Prints all maps
 void PathPlanner::printAllMaps() {
   std::cout << header << "Finding shortest paths..."<< std::endl;
-  outputFile << header << "Finding shortest paths..."<< std::endl;
   for (std::size_t i = 0; i < posPaths.size(); i++) {
     std::cout << header << "Path - " << i+1 << ":" << std::endl;
-    outputFile << header << "Path - " << i+1 << ":" << std::endl;
     printPathMap(i);
   }
   std::cout << header << posPaths.size() << " shortest paths found!" << std::endl;
-  outputFile << header << posPaths.size() << " shortest paths found!" << std::endl;
 }
 
 // Finds the best path with least amount of turns
-void PathPlanner::findShortestPath() {
+std::string PathPlanner::findShortestPath() {
   std::cout << header << "Finding shortest path with least turns..." << std::endl;
-  outputFile << header << "Finding shortest path with least turns..." << std::endl;
   int bestI = 0, bestL = countTurns(getPathString(0));
   for (std::size_t i = 1; i < posPaths.size(); i++) {
     if (countTurns(getPathString(i)) < bestL) {
@@ -245,9 +222,8 @@ void PathPlanner::findShortestPath() {
   printPathMap(bestI);
   bestPath = getPathString(bestI);
   std::cout << header << "Shortest path with least turns found!" << std::endl;
-  outputFile << header << "Shortest path with least turns found!" << std::endl;
   std::cout << header << "Path Plan (" << bestPath.length()-3 << " steps): " << bestPath << std::endl;
-  outputFile << header << "Path Plan (" << bestPath.length()-3 << " steps): " << bestPath << std::endl;
+  return bestPath;
 }
 
 // Writes the path plan to the file
@@ -259,9 +235,7 @@ void PathPlanner::writeToFile() {
     exit(1);
   }
   std::cout << header << "Writing path plan to "<< planPath << "..." << std::endl;
-  outputFile << header << "Writing path plan to "<< planPath << "..." << std::endl;
   file << bestPath;
   file.close();
   std::cout << header << "Path plan written to "<< planPath << "!" << std::endl;
-  outputFile << header << "Path plan written to "<< planPath << "!" << std::endl;
 }

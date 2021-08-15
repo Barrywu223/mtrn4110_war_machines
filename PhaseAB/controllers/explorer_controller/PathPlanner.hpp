@@ -3,6 +3,7 @@
 
 #define LINE_LENGTH 10+9*3
 
+#include <sstream>
 #include <iostream>
 #include <fstream>
 #include <cstdio>
@@ -16,8 +17,10 @@ class PathPlanner {
   const std::string mapPath = "../../Map.txt";
   const std::string planPath = "../../MotionPlan.txt";
   const std::string outputPath = "../../Output.txt";
+  const int MAPSIZE_X = 17;
+  const int MAPSIZE_Y = 9;
   std::vector<std::string> rawMap;
-  std::string bestPath;
+  std::string bestPath = "";
   std::ofstream outputFile;
   
   int initialX, initialY; std::string initialH;
@@ -31,13 +34,12 @@ private:
 
   void findTargets();
   void findDistMap();
-  void recursePath(std::pair<int, int>, int);
   void findPosPaths();
   std::string getPathString(int);
   int countTurns(std::string);
   void printPathMap(int);
   void printAllMaps();
-  void findShortestPath();
+  std::string findShortestPath();
   void writeToFile();
   
   // Functions to interpret the raw map string
@@ -50,10 +52,10 @@ private:
   
 public:
 
-  PathPlanner();
+  PathPlanner(std::string map);
   ~PathPlanner();
  
-  void findBestPath();
+  std::string findBestPath();
   void run();
  
 };

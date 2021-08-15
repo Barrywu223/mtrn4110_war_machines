@@ -10,7 +10,6 @@ int main(int argc, char **argv) {
   robot->step(2*TIME_STEP);
 
   // Main function
-  // pr->followMP();
   er->explore();
 
   return 0;

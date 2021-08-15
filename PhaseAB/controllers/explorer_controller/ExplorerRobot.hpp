@@ -6,7 +6,7 @@
 #include "CustomRobot.hpp"
 
 const int MAPSIZE_X = 17;
-const int MAPSIZE_Y = 11;
+const int MAPSIZE_Y = 9;
 
 using namespace std;
 using namespace webots;
@@ -16,7 +16,8 @@ struct _Cell {
          down = false, 
          left = false, 
          right = false,
-         explored = false;
+         explored = false,
+         oor = true; //out of range
 };
 typedef struct _Cell Cell;
 
@@ -24,6 +25,8 @@ class Map {
 
 private:
     int robot_x, robot_y;
+    bool target;
+    int target_x = 0, target_y = 0;
     char robot_heading;
     std::vector<std::vector<Cell>> map;
 
@@ -31,7 +34,9 @@ public:
     Map();
     ~Map();
 
-    void updateMap(int x, int y, char heading, bool l, bool f, bool r);
+    bool updateMap(int x, int y, char heading, bool l, bool f, bool r);
+    bool findUnexploredr(int x, int y);
+    bool findUnexplored();
     string fullMapString();
     void printFullMap();
 };
@@ -40,14 +45,14 @@ class ExplorerRobot : public CustomRobot {
 
 private:
     //Starts at middle of map large enough for any starting location
-    int x = 8, y = 5; 
+    int x = 8, y = 4; 
     Map* map;
 
 public:
     ExplorerRobot(Robot *);
     ~ExplorerRobot();
 
-    void updateMap();
+    bool updateMap();
     void explore();
 };
 

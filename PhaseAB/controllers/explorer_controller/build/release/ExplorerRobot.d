@@ -5,4 +5,5 @@ build/release/ExplorerRobot.o: ExplorerRobot.cpp ExplorerRobot.hpp \
  C:\Users\Stuart\AppData\Local\Programs\Webots/include/controller/cpp/webots/Device.hpp \
  C:/Users/Stuart/AppData/Local/Programs/Webots/include/controller/c/webots/types.h \
  C:\Users\Stuart\AppData\Local\Programs\Webots/include/controller/cpp/webots/DistanceSensor.hpp \
- C:\Users\Stuart\AppData\Local\Programs\Webots/include/controller/cpp/webots/Compass.hpp
+ C:\Users\Stuart\AppData\Local\Programs\Webots/include/controller/cpp/webots/Compass.hpp \
+ PathPlanner.hpp
