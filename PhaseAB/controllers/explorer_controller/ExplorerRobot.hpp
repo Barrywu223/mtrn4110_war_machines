@@ -24,8 +24,9 @@ typedef struct _Cell Cell;
 class Map {
 
 private:
+    const std::string mapPath = "../../ExploredMap.txt";
+    char initialH;
     int robot_x, robot_y;
-    bool target;
     int target_x = 0, target_y = 0;
     char robot_heading;
     std::vector<std::vector<Cell>> map;
@@ -34,11 +35,13 @@ public:
     Map();
     ~Map();
 
+    void setInitial(char heading);
     bool updateMap(int x, int y, char heading, bool l, bool f, bool r);
-    bool findUnexploredr(int x, int y);
     bool findUnexplored();
-    string fullMapString();
+    std::string fullMapString();
+    std::string printPartialMap();
     void printFullMap();
+    void saveMap();
 };
 
 class ExplorerRobot : public CustomRobot {

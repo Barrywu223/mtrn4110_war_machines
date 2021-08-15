@@ -18,34 +18,50 @@ Map::Map() {
 
 Map::~Map() {}
 
-bool Map::findUnexploredr(int x, int y) {
-    if (x < 1 || y < 1 || x >= MAPSIZE_X || y >= MAPSIZE_Y) return false;
-    if (!map[x][y].explored && !map[x][y].oor) {
-        target = true;
-        target_x = x; target_y = y;
-        return true;
-    }
-    return (findUnexploredr(x-1, y) || findUnexploredr(x+1, y) || findUnexploredr(x, y-1) || findUnexploredr(x, y+1));
+void Map::setInitial(char heading) {
+    initialH = heading;
 }
 
+void Map::saveMap() {
+    std::ofstream file;
+    file.open(mapPath);
+    if (!file.is_open()) {
+        std::cout << "Error: could not find path file" << mapPath; 
+        exit(1);
+    }
+    std::cout << "Writing map to "<< mapPath << "..." << std::endl;
+    file << printPartialMap();
+    file.close();
+    std::cout << "Map saved successfully!" << std::endl;
+}
+
+// Selects closest unexplored tile by absolute distance
 bool Map::findUnexplored() {
+    int dist[MAPSIZE_X][MAPSIZE_Y];
     for (int y = 0; y < MAPSIZE_Y; y++) {
         for (int x = 0; x < MAPSIZE_X; x++) {
-            if (!map[x][y].explored && !map[x][y].oor) {
-                target = true;
-                target_x = x; target_y = y;
-                return true;
+            dist[x][y] = (!map[x][y].explored && !map[x][y].oor) * (abs(robot_x - x) + abs(robot_y - y));
+        }
+    }
+    int best_x = -1, best_y = -1, best_dist = 0x3FFFFFFF;
+    for (int y = 0; y < MAPSIZE_Y; y++) {
+        for (int x = 0; x < MAPSIZE_X; x++) {
+            if (dist[x][y] != 0 && dist[x][y] < best_dist) {
+                best_x = x; best_y = y; best_dist = dist[x][y];
             }
         }
     }
-    target_x = 0; target_y = 0;
+    if (best_x != -1 && best_y != -1) {
+        target_x = best_x; target_y = best_y;
+        return true;
+    } 
     return false;
 }
 
 bool Map::updateMap(int x, int y, char heading, bool l, bool f, bool r) {
     if (heading == 'N') {
         map[x][y].left = l; map[x][y].up = f; map[x][y].right = r;
-        if (!l && x != 0)         map[x-1][y].oor = false;
+        if (!l && x != 0)         map[x-1][y].oor = false; 
         if (!r && x != MAPSIZE_X) map[x+1][y].oor = false;
         if (!f && y != 0)         map[x][y-1].oor = false;
     }
@@ -71,6 +87,37 @@ bool Map::updateMap(int x, int y, char heading, bool l, bool f, bool r) {
     map[x][y].oor = false;
     robot_x = x; robot_y = y; robot_heading = heading;
     return findUnexplored();
+}
+
+std::string Map::printPartialMap() {
+    int start_x = -1, start_y = -1;
+    for (int y = 0; y < MAPSIZE_Y && start_y == -1; y++) {
+        for (int x = 0; x < MAPSIZE_X && start_x == -1; x++) {
+            if (map[x][y].explored) {start_x = x; start_y = y;}
+        }
+    }
+    std::stringstream mapString; mapString.str("");
+    for (int x = start_x; x < start_x + 9; x++) mapString << ((map[x][start_y].up) ? " ---" : "    ");
+    mapString << "\n";
+    for (int y = start_y; y < start_y + 5; y++) {
+        for (int x = start_x; x < start_x + 9; x++) {
+            if (x == start_x) mapString << ((map[start_x][y].left) ? "|" : " ");
+            if (x == 8 && y == 4) {
+                if      (initialH == 'N') mapString << " ^ ";
+                else if (initialH == 'S') mapString << " v ";
+                else if (initialH == 'E') mapString << " > ";
+                else if (initialH == 'W') mapString << " < ";
+            } // else if (x == target_x && y == target_y) mapString << " x ";
+            // else mapString << ((map[x][y].oor) ? " I " : (map[x][y].explored) ? " 1 " : " 0 ");
+            else mapString << ((map[x][y].oor) ? "   " : (map[x][y].explored) ? "   " : "   ");
+            if (x == start_x + 9-1) mapString << ((map[start_x + 9-1][y].right) ? "|" : " ");
+            else mapString << ((map[x][y].right || map[x+1][y].left) ? "|" : " ");
+        }       
+        mapString << "\n";
+        for (int x = start_x; x < start_x + 9; x++) mapString << ((map[x][y].down || map[x][y+1].up) ? " ---" : "    ");
+        mapString << "\n";
+    }
+    return mapString.str();
 }
 
 std::string Map::fullMapString() {
@@ -116,6 +163,15 @@ bool ExplorerRobot::updateMap() {
 
 void ExplorerRobot::explore() {
 
+    // Turns to explore potential position behind the robot
+    // Used to complete map - checks left to see if clear, if not just turns right
+    map->setInitial(getCurrentHeading());
+    updateMap();
+    if (!leftWall()) turnLeft();
+    else turnRight();
+
+    map->printPartialMap();
+
     while (updateMap()) {
         PathPlanner *pp = new PathPlanner(map->fullMapString());
         std::string path = pp->findBestPath(); delete pp;
@@ -135,4 +191,7 @@ void ExplorerRobot::explore() {
         else if (move == 'L') turnLeft();
     }
     stop();
+    cout << "Exploring finished. Final map:" << endl;
+    cout << map->printPartialMap() << endl;
+    map->saveMap();
 }

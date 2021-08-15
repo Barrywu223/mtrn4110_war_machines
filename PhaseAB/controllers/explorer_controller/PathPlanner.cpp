@@ -85,7 +85,7 @@ void PathPlanner::findDistMap() {
   while(!pq.empty()) {
     auto elem = pq[0]; pq.erase(pq.begin());
     int currX = elem.first.first, currY = elem.first.second, currDist = elem.second;
-    // if (currX == initialX && currY == initialY) return;
+    if (currX == initialX && currY == initialY) return; // exit algorithm early to not branch too much
     if (!getD(currX, currY) && currDist < dist[currX+1][currY]) {
       dist[currX+1][currY] = currDist+1;
       pq.push_back(std::make_pair(std::make_pair(currX+1, currY), currDist+1));
