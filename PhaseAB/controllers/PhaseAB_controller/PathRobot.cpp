@@ -8,6 +8,7 @@ PathRobot::PathRobot(Robot* r) : CustomRobot(r) {
     std::cout << "Error: could not set up csv file " << CSVPath; 
     exit(1);
   }
+
   readFile();
   setupCSV();
 }

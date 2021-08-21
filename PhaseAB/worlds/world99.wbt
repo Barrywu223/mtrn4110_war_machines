@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.9999999999999452 2.6353734250886e-07 2.003422471112327e-07 1.569999214364475
-  position -0.08303840381863269 2.579117951670059 0.03202809612885971
+  orientation 0.051127925384525055 -0.7734063839888592 -0.6318453137051441 2.78734
+  position -1 2.8 -0.55
 }
 TexturedBackground {
 }
@@ -19,9 +19,38 @@ DEF MAZE Group {
     DEF cornerStone Solid {
       translation -0.7425 0.0325 -0.4125
       children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.333333 1 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation 0.01 0.033 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
         DEF cornerStone Shape {
           appearance PBRAppearance {
-            baseColor 1 0 1
+            baseColor 0 0 0
             roughness 0.5
           }
           geometry Box {
@@ -38,9 +67,38 @@ DEF MAZE Group {
     DEF cornerStone Solid {
       translation 0.7425 0.0325 -0.4125
       children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 0 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation 0 0.033 0.01
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
         DEF cornerStone Shape {
           appearance PBRAppearance {
-            baseColor 1 0 1
+            baseColor 0 0 0
             roughness 0.5
           }
           geometry Box {
@@ -57,9 +115,38 @@ DEF MAZE Group {
     DEF cornerStone Solid {
       translation 0.7425 0.0325 0.4125
       children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 0 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation -0.01 0.033 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
         DEF cornerStone Shape {
           appearance PBRAppearance {
-            baseColor 1 0 1
+            baseColor 0 0 0
             roughness 0.5
           }
           geometry Box {
@@ -76,9 +163,38 @@ DEF MAZE Group {
     DEF cornerStone Solid {
       translation -0.7425 0.0325 0.4125
       children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 0 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation 0 0.033 -0.01
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
         DEF cornerStone Shape {
           appearance PBRAppearance {
-            baseColor 1 0 1
+            baseColor 0 0 0
             roughness 0.5
           }
           geometry Box {
@@ -466,68 +582,84 @@ DEF MAZE Group {
     }
   ]
 }
-DEF z5211399 E-puck {
-  translation -0.66 0 -0.330001
-  rotation 0 1 0 -3.1415853071795863
-  controller "explorer_controller_keyboard"
-  camera_width 320
-  camera_height 240
+DEF z1234567 E-puck {
+  translation 0.495 0 -0.33
+  rotation 0 1 0 1.5708
+  controller ""
   turretSlot [
-    Compass {
-    }
-    HingeJoint {
-    }
-    DistanceSensor {
-      translation 0.0365 -0.0085 -0.01
+    DEF Marker Solid {
+      translation 0 0.0001 -0.01
+      rotation 0 1 0 -0.7854003061004253
       children [
-        DEF sensor Shape {
+        Shape {
           appearance PBRAppearance {
-            baseColor 0 1 1
+            baseColorMap ImageTexture {
+              url [
+                "marker1.png"
+              ]
+            }
+            roughness 1
+            metalness 0
           }
-          geometry Box {
-            size 0.005 0.005 0.005
+          geometry Plane {
+            size 0.02 0.02
           }
         }
       ]
-      name "ds_right"
-      boundingObject USE sensor
-      physics Physics {
+      name "solid1"
+    }
+    DEF White Solid {
+      translation 0 0 -0.01
+      rotation 0 1 0 -0.7854003061004253
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+            }
+            roughness 1
+            metalness 0
+          }
+          geometry Plane {
+            size 0.025 0.025
+          }
+        }
+      ]
+      name "solid2"
+    }
+  ]
+}
+DEF Target Transform {
+  translation -0.33 0.05 0
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColorMap ImageTexture {
+          url [
+            "ladybug.png"
+          ]
+        }
+        metalness 0
+      }
+      geometry Plane {
+        size 0.165 0.165
       }
     }
-    DistanceSensor {
-      translation -0.0365 -0.0085 -0.01
-      rotation 0 1 0 3.14
-      children [
-        DEF sensor Shape {
-          appearance PBRAppearance {
-            baseColor 0 1 1
-          }
-          geometry Box {
-            size 0.005 0.005 0.005
-          }
+  ]
+}
+DEF Target_Fake Transform {
+  translation 0.33 0.05 0.165
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColorMap ImageTexture {
+          url [
+            "ladybug_fake.png"
+          ]
         }
-      ]
-      name "ds_left"
-      boundingObject USE sensor
-      physics Physics {
+        metalness 0
       }
-    }
-    DistanceSensor {
-      translation 0 -0.0085 -0.045
-      rotation 0 1 0 1.57
-      children [
-        DEF sensor Shape {
-          appearance PBRAppearance {
-            baseColor 0 1 1
-          }
-          geometry Box {
-            size 0.005 0.005 0.005
-          }
-        }
-      ]
-      name "ds_front"
-      boundingObject USE sensor
-      physics Physics {
+      geometry Plane {
+        size 0.165 0.165
       }
     }
   ]
