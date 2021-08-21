@@ -16,7 +16,7 @@ class PathRobot : public CustomRobot {
     std::string heading;
 
 private:
-    const std::string header = "[z5209457_MTRN4110_PhaseA] ";
+    const std::string header = "[war_machines_PhaseA] ";
     const std::string CSVPath = "../../MotionExecution.csv";
     const std::string filePath = "../../MotionPlan.txt";
     std::string rawData;

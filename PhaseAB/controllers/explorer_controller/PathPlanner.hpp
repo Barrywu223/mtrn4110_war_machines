@@ -13,7 +13,7 @@
 
 class PathPlanner {
 
-  const std::string header = "[z5209457_MTRN4110_PhaseB] ";
+  const std::string header = "[war_machines_PhaseB] ";
   const std::string mapPath = "../../Map.txt";
   const std::string planPath = "../../MotionPlan.txt";
   const std::string outputPath = "../../Output.txt";

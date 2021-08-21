@@ -29,10 +29,10 @@ void Map::saveMap() {
         std::cout << "Error: could not find path file" << mapPath; 
         exit(1);
     }
-    std::cout << "Writing map to "<< mapPath << "..." << std::endl;
+    std::cout << "[war_machines_PhaseB] " << "Writing map to "<< mapPath << "..." << std::endl;
     file << printPartialMap();
     file.close();
-    std::cout << "Map saved successfully!" << std::endl;
+    std::cout << "[war_machines_PhaseB] " << "Map saved successfully!" << std::endl;
 }
 
 // Selects closest unexplored tile by absolute distance
@@ -117,7 +117,9 @@ std::string Map::printPartialMap() {
         for (int x = start_x; x < start_x + 9; x++) mapString << ((map[x][y].down || map[x][y+1].up) ? " ---" : "    ");
         mapString << "\n";
     }
-    return mapString.str();
+    std::string finalMap = mapString.str();
+    finalMap[205] = 'x';
+    return finalMap;
 }
 
 std::string Map::fullMapString() {
@@ -191,7 +193,7 @@ void ExplorerRobot::explore() {
         else if (move == 'L') turnLeft();
     }
     stop();
-    cout << "Exploring finished. Final map:" << endl;
+    cout << "[war_machines_PhaseB] " << "Exploring finished. Final map:" << endl;
     cout << map->printPartialMap() << endl;
     map->saveMap();
 }
