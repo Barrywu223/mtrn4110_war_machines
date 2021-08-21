@@ -1,0 +1,488 @@
+#VRML_SIM R2021a utf8
+WorldInfo {
+  coordinateSystem "NUE"
+}
+Viewpoint {
+  orientation 1 0 0 -1.5707996938995747
+  position 0 2.5 0
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  floorSize 2.1445 1.4855
+  floorTileSize 0.33 0.33
+}
+DEF war_machine E-puck {
+  translation -0.66 0 -0.33
+  rotation 0 1 0 3.141592653589793
+  controller "PhaseAB_controller"
+  turretSlot [
+    Compass {
+    }
+    DistanceSensor {
+      translation 0 -0.0085 -0.045
+      rotation 0 1 0 1.57
+      children [
+        DEF sensor Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 1
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+      ]
+      name "ds_front"
+      boundingObject USE sensor
+      physics Physics {
+      }
+    }
+    DistanceSensor {
+      translation -0.0365 -0.0085 -0.01
+      rotation 0 1 0 3.14
+      children [
+        DEF sensor Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 1
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+      ]
+      name "ds_left"
+      boundingObject USE sensor
+      physics Physics {
+      }
+    }
+    DistanceSensor {
+      translation 0.0365 -0.0085 -0.01
+      children [
+        DEF sensor Shape {
+          appearance PBRAppearance {
+            baseColor 0 1 1
+          }
+          geometry Box {
+            size 0.005 0.005 0.005
+          }
+        }
+      ]
+      name "ds_right"
+      boundingObject USE sensor
+      physics Physics {
+      }
+    }
+    DEF Marker Solid {
+      translation 0 0.0001 -0.01
+      rotation 0 1 0 -0.7854003061004253
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+              url [
+                "marker1.png"
+              ]
+            }
+            roughness 1
+            metalness 0
+          }
+          geometry Plane {
+            size 0.02 0.02
+          }
+        }
+      ]
+      name "solid1"
+    }
+    DEF White Solid {
+      translation 0 0 -0.01
+      rotation 0 1 0 -0.7854003061004253
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColorMap ImageTexture {
+            }
+            roughness 1
+            metalness 0
+          }
+          geometry Plane {
+            size 0.025 0.025
+          }
+        }
+      ]
+      name "solid2"
+    }
+  ]
+}
+DEF MAZE Group {
+  children [
+    DEF cornerStone Solid {
+      translation -0.7425004969234233 0.03249977051772695 -0.4125004969234232
+      rotation 0.7071067811832289 1.0358452140530877e-12 -0.7071067811898663 -2.162326005065441e-05
+      children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.333333 1 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation 0.01 0.033 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
+        DEF cornerStone Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 0.5
+          }
+          geometry Box {
+            size 0.015 0.065 0.015
+          }
+        }
+      ]
+      name "solid(4)"
+      boundingObject USE cornerStone
+      physics Physics {
+        density 100
+      }
+      linearVelocity -1.5528856976451266e-05 -7.171321032846581e-06 -1.552885697632787e-05
+      angularVelocity -0.00047781105667818436 -6.999484511427632e-16 0.0004778110566826694
+    }
+    DEF cornerStone Solid {
+      translation 0.7424995030765768 0.03249977051772695 -0.4125004969234232
+      rotation 0.7071067811832289 1.0358452140530877e-12 -0.7071067811898663 -2.162326005065441e-05
+      children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 0 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation 0 0.033 0.01
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
+        DEF cornerStone Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 0.5
+          }
+          geometry Box {
+            size 0.015 0.065 0.015
+          }
+        }
+      ]
+      name "solid(5)"
+      boundingObject USE cornerStone
+      physics Physics {
+        density 100
+      }
+      linearVelocity -1.5528856976451266e-05 -7.171321032846581e-06 -1.552885697632787e-05
+      angularVelocity -0.00047781105667818436 -6.999484511427632e-16 0.0004778110566826694
+    }
+    DEF cornerStone Solid {
+      translation 0.7424995030765768 0.03249977051772695 0.41249950307657673
+      rotation 0.7071067811832289 1.0358452140530877e-12 -0.7071067811898663 -2.162326005065441e-05
+      children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 0 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation -0.01 0.033 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
+        DEF cornerStone Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 0.5
+          }
+          geometry Box {
+            size 0.015 0.065 0.015
+          }
+        }
+      ]
+      name "solid(6)"
+      boundingObject USE cornerStone
+      physics Physics {
+        density 100
+      }
+      linearVelocity -1.5528856976451266e-05 -7.171321032846581e-06 -1.552885697632787e-05
+      angularVelocity -0.00047781105667818436 -6.999484511427632e-16 0.0004778110566826694
+    }
+    DEF cornerStone Solid {
+      translation -0.7425004969234233 0.03249977051772695 0.41249950307657673
+      rotation 0.7071067811832289 1.0358452140530877e-12 -0.7071067811898663 -2.162326005065441e-05
+      children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 0 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation 0 0.033 -0.01
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
+        DEF cornerStone Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 0
+            roughness 0.5
+          }
+          geometry Box {
+            size 0.015 0.065 0.015
+          }
+        }
+      ]
+      name "solid(7)"
+      boundingObject USE cornerStone
+      physics Physics {
+        density 100
+      }
+      linearVelocity -1.5528856976451266e-05 -7.171321032846581e-06 -1.552885697632787e-05
+      angularVelocity -0.00047781105667818436 -6.999484511427632e-16 0.0004778110566826694
+    }
+    DEF hWall Solid {
+      translation -4.826617312900469e-07 0.032478007313192746 -0.4125457068703584
+      rotation -0.9999442489217286 2.4748630723332295e-07 0.010559310976512356 0.0014064668819136572
+      children [
+        DEF hWall Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.3
+          }
+          geometry Box {
+            size 1.46 0.065 0.015
+          }
+        }
+      ]
+      name "solid(1)"
+      boundingObject USE hWall
+      physics Physics {
+        density 100
+      }
+      linearVelocity -1.5083179102813966e-05 -0.0006872714627267251 -0.0014283396987016296
+      angularVelocity -0.04394964692830175 1.0877542257203536e-08 0.0004641038635146801
+    }
+    DEF hWall Solid {
+      translation -4.826617312900469e-07 0.032478007313192746 0.41245429312964155
+      rotation -0.9999442489217286 2.4748630723332295e-07 0.010559310976512356 0.0014064668819136572
+      children [
+        DEF hWall Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            roughness 0.3
+          }
+          geometry Box {
+            size 1.46 0.065 0.015
+          }
+        }
+      ]
+      boundingObject USE hWall
+      physics Physics {
+        density 100
+      }
+      linearVelocity -1.5083179102813966e-05 -0.0006872714627267251 -0.0014283396987016296
+      angularVelocity -0.04394964692830175 1.0877542257203536e-08 0.0004641038635146801
+    }
+    DEF vWall Solid {
+      translation -0.7425256940564015 0.03248786483392477 -4.891106166783615e-07
+      rotation 0.019032457526561852 2.4733543943684037e-07 -0.9998188663755242 -0.0007907367645155608
+      children [
+        DEF vWall Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 0.3
+          }
+          geometry Box {
+            size 0.015 0.065 0.8
+          }
+        }
+      ]
+      name "solid(2)"
+      boundingObject USE vWall
+      physics Physics {
+        density 100
+      }
+      linearVelocity -0.0008029392625427485 -0.00037922393985103157 -1.5284706771198795e-05
+      angularVelocity -0.0004703020209219358 -6.111788603779656e-09 0.024706049271674427
+    }
+    DEF vWall Solid {
+      translation 0.7424743059435986 0.03248786483392477 -4.891106166783615e-07
+      rotation 0.019032457526561852 2.4733543943684037e-07 -0.9998188663755242 -0.0007907367645155608
+      children [
+        DEF vWall Shape {
+          appearance PBRAppearance {
+            baseColor 0 0 1
+            roughness 0.3
+          }
+          geometry Box {
+            size 0.015 0.065 0.8
+          }
+        }
+      ]
+      name "solid(3)"
+      boundingObject USE vWall
+      physics Physics {
+        density 100
+      }
+      linearVelocity -0.0008029392625427485 -0.00037922393985103157 -1.5284706771198795e-05
+      angularVelocity -0.0004703020209219358 -6.111788603779656e-09 0.024706049271674427
+    }
+    DEF Pole MazeBlock {
+      hidden linearVelocity_0 -3.103003898897121e-05 -1.4338166740701277e-05 -3.1030038988920985e-05
+      hidden angularVelocity_0 -0.0009547707213346904 -5.087024082085656e-16 0.0009547707213362795
+      translation 0.08250000000030208 -4.587909980813265e-07 -0.08249999999969793
+      rotation 0.707106781185959 3.7674691359100763e-13 -0.707106781187136 -4.320799049149816e-05
+      name "maze block(34)"
+      length 0.015
+    }
+    DEF hBlock MazeBlock {
+      hidden linearVelocity_0 -3.0897650881401415e-05 -0.00013348254411452756 -0.00028686383103071234
+      hidden angularVelocity_0 -0.008826607583078095 4.270727597748709e-09 0.0009506993252227419
+      translation -0.6599999999975493 -4.2701299661912495e-06 -0.5774999999708919
+      rotation -0.9942494422898047 4.810646097345328e-07 0.10708896538010303 0.00028408508845467555
+      name "maze block(10)"
+      length 0.14
+    }
+    DEF vBlock MazeBlock {
+      hidden linearVelocity_0 -0.0002868637269934128 -0.0001334825441143974 3.089861678175707e-05
+      hidden angularVelocity_0 0.0009507290453300206 4.2707275478678665e-09 0.008826604381921491
+      translation -0.904999999970892 -4.270129966184311e-06 -0.33000000000245083
+      rotation -0.0001260140540535724 0.9999999798239839 0.00015643685614824814 1.570799714212254
+      name "maze block(78)"
+      length 0.14
+    }
+    DEF vBlock MazeBlock {
+      hidden linearVelocity_0 -0.0002868637269934942 -0.00013348254411446248 3.0898616781777014e-05
+      hidden angularVelocity_0 0.000950729045332469 4.270727409643846e-09 0.008826604381923467
+      translation 0.24750000002910813 -4.2701299661912495e-06 -0.16500000000245083
+      rotation -0.00012601405405356485 0.9999999798239839 0.00015643685614831894 1.570799714212254
+      name "maze block(49)"
+      length 0.14
+    }
+    DEF vBlock MazeBlock {
+      hidden linearVelocity_0 -0.0002868637269936533 -0.00013348254411446248 3.0898616781767364e-05
+      hidden angularVelocity_0 0.0009507290453326451 4.2707273711815095e-09 0.008826604381928515
+      translation -0.08249999997089187 -4.2701299661912495e-06 -2.45080738777543e-12
+      rotation -0.0001260140540536428 0.9999999798239839 0.00015643685614840253 1.570799714212254
+      name "maze block(17)"
+      length 0.14
+    }
+  ]
+}
+DEF Target Transform {
+  translation 0 0.05 0
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColorMap ImageTexture {
+          url [
+            "ladybug.png"
+          ]
+        }
+        metalness 0
+      }
+      geometry Plane {
+        size 0.165 0.165
+      }
+    }
+  ]
+}
+DEF Target_Fake Transform {
+  translation 0.33 0.05 -0.165
+  children [
+    Shape {
+      appearance PBRAppearance {
+        baseColorMap ImageTexture {
+          url [
+            "ladybug_fake.png"
+          ]
+        }
+        metalness 0
+      }
+      geometry Plane {
+        size 0.165 0.165
+      }
+    }
+  ]
+}
