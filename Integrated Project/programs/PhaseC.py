@@ -48,6 +48,18 @@ def printMaxtirx(matrix):
     for row in matrix:
         print(row)
     print(' ')
+    
+def findRobotCenter(hsv):
+    mask_robot = cv.inRange(hsv,robot_lower,robot_upper)
+    mask_robot = cv.erode(mask_robot, kernal3, iterations=1)
+    mask_robot = cv.morphologyEx(mask_robot, cv.MORPH_CLOSE, kernal7, iterations=7)
+    mask_robot = cv.dilate(mask_robot, kernal3, iterations=3)
+    _, robotContours, robotHierarchy = cv.findContours(mask_robot, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
+    robotContours = max(robotContours, key=cv.contourArea)
+    x, y, w, h = cv.boundingRect(robotContours)
+    row, col = np.where(mask_robot > 0)
+    robot_center = (int(x+w/2), int(y+h/2))
+    return robot_center
 
 print("[war_machines_PhaseC] Generating map from images...")
 
