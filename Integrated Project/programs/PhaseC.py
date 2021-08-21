@@ -465,42 +465,31 @@ print("[war_machines_PhaseC] Closing Webots...")
 subprocess.Popen(['taskkill', '/F', '/T', '/PID', str(webots.pid)], stdout=open(os.devnull, 'wb'))
 print("[war_machines_PhaseC] Webots closed successfully!")
 
-# print("[war_machines_PhaseC] Tracking robot in the recording...")
+print("[war_machines_PhaseC] Tracking robot in the recording...")
 
-# cap = cv.VideoCapture("output.avi")
+cap = cv.VideoCapture("output.avi")
+path_coords = []
 
-# while cap.isOpened():
-#     ret, frame = cap.read()
+while cap.isOpened():
+    ret, frame = cap.read()
+    if ret:
+        hsv = cv.cvtColor(frame,cv.COLOR_BGR2HSV)
     
-#     if ret:
-#         hsv = cv.cvtColor(frame,cv.COLOR_BGR2HSV)
-#         cv.imshow('Frame', hsv)
-#         # mask_robot = cv.inRange(hsv, robot_lower, robot_upper)
+        robot_center = findRobotCenter(hsv)
+    
+        robot_radius = 30
+        cv.circle(frame, robot_center, robot_radius, (235, 225, 35), 3) #(235, 225, 35)
+        path_coords.append(robot_center)
+        for i in path_coords:
+            cv.circle(frame,i,1,(0,0,255),2)
+        cv.imshow('Frame', frame)
+        if (cv.waitKey(1) & 0xFF == ord('q')):
+            break
+        
+    else:
+        break
 
-#         # mask_robot = cv.erode(mask_robot, kernal3, iterations=1)
-#         # # cvShow(robot_mask, 'robot mask')
-#         # mask_robot = cv.morphologyEx(mask_robot, cv.MORPH_CLOSE, kernal7, iterations=7)
-#         # # robot_mask = cv.erode(robot_mask, kernal1, iterations=5)
-#         # mask_robot = cv.dilate(mask_robot, kernal3, iterations=3)
-#         # # cvShow(robot_mask, 'robot mask')
-
-#         # _, robotContours, robotHierarchy = cv.findContours(
-#         #     mask_robot, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
-#         # # robotContours = sorted(robotContours, key=cv.contourArea, reverse=True)[:1]
-#         # robotContours = max(robotContours, key=cv.contourArea)
-#         # x, y, w, h = cv.boundingRect(robotContours)
-#         # row, col = np.where(mask_robot > 0)
-#         # robot_center = (int(x+w/2), int(y+h/2))
-#         # # print(robot_center)
-#         # robot_radius = 30
-#         # eframe = cv.cvtColor(hsv, cv.COLOR_HSV2RGB)
-#         # eframe = cv.circle(eframe, robot_center, robot_radius, GOOD_YELLOW, 3)
-
-#     else:
-#         break
-
-# cap.release()
-# cv.destroyAllWindows()
-
-# print("[war_machines_PhaseC] Finished Robot Tracking!")
+cap.release()
+cv.destroyAllWindows()
+print("[war_machines_PhaseC] Finished Robot Tracking!")
 print("[war_machines_PhaseC] Program finished successfully!")
