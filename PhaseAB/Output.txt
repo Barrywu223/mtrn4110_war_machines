@@ -1,0 +1,92 @@
+[war_machines_PhaseB] Reading in map from ../../Map.txt...
+[war_machines_PhaseB] Map read in!
+[war_machines_PhaseB] Finding shortest paths...
+[war_machines_PhaseB] Path - 1:
+[war_machines_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[war_machines_PhaseB] | v             |                   |
+[war_machines_PhaseB]      ---                 ---         
+[war_machines_PhaseB] | 15  14    |           |   |       |
+[war_machines_PhaseB]  ---             --- ---     ---     
+[war_machines_PhaseB] |     13|   |   | 0   1   2   3     |
+[war_machines_PhaseB]          ---     --- --- ---         
+[war_machines_PhaseB] |   | 12  11  10  9     | 5   4     |
+[war_machines_PhaseB]          ---         ---     ---     
+[war_machines_PhaseB] |   |           | 8   7   6 |       |
+[war_machines_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[war_machines_PhaseB] Path - 2:
+[war_machines_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[war_machines_PhaseB] | v   15  14  13|                   |
+[war_machines_PhaseB]      ---                 ---         
+[war_machines_PhaseB] |           | 12        |   |       |
+[war_machines_PhaseB]  ---             --- ---     ---     
+[war_machines_PhaseB] |       |   | 11| 0   1   2   3     |
+[war_machines_PhaseB]          ---     --- --- ---         
+[war_machines_PhaseB] |   |         10  9     | 5   4     |
+[war_machines_PhaseB]          ---         ---     ---     
+[war_machines_PhaseB] |   |           | 8   7   6 |       |
+[war_machines_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[war_machines_PhaseB] Path - 3:
+[war_machines_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[war_machines_PhaseB] | v   15  14  13| 10  9   8   7     |
+[war_machines_PhaseB]      ---                 ---         
+[war_machines_PhaseB] |           | 12  11    |   | 6   5 |
+[war_machines_PhaseB]  ---             --- ---     ---     
+[war_machines_PhaseB] |       |   |   | 0   1   2   3   4 |
+[war_machines_PhaseB]          ---     --- --- ---         
+[war_machines_PhaseB] |   |                   |           |
+[war_machines_PhaseB]          ---         ---     ---     
+[war_machines_PhaseB] |   |           |           |       |
+[war_machines_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[war_machines_PhaseB] Path - 4:
+[war_machines_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[war_machines_PhaseB] | v   15  14  13|     9   8   7     |
+[war_machines_PhaseB]      ---                 ---         
+[war_machines_PhaseB] |           | 12  11  10|   | 6   5 |
+[war_machines_PhaseB]  ---             --- ---     ---     
+[war_machines_PhaseB] |       |   |   | 0   1   2   3   4 |
+[war_machines_PhaseB]          ---     --- --- ---         
+[war_machines_PhaseB] |   |                   |           |
+[war_machines_PhaseB]          ---         ---     ---     
+[war_machines_PhaseB] |   |           |           |       |
+[war_machines_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[war_machines_PhaseB] Path - 5:
+[war_machines_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[war_machines_PhaseB] | v   15  14  13| 10  9   8   7   6 |
+[war_machines_PhaseB]      ---                 ---         
+[war_machines_PhaseB] |           | 12  11    |   |     5 |
+[war_machines_PhaseB]  ---             --- ---     ---     
+[war_machines_PhaseB] |       |   |   | 0   1   2   3   4 |
+[war_machines_PhaseB]          ---     --- --- ---         
+[war_machines_PhaseB] |   |                   |           |
+[war_machines_PhaseB]          ---         ---     ---     
+[war_machines_PhaseB] |   |           |           |       |
+[war_machines_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[war_machines_PhaseB] Path - 6:
+[war_machines_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[war_machines_PhaseB] | v   15  14  13|     9   8   7   6 |
+[war_machines_PhaseB]      ---                 ---         
+[war_machines_PhaseB] |           | 12  11  10|   |     5 |
+[war_machines_PhaseB]  ---             --- ---     ---     
+[war_machines_PhaseB] |       |   |   | 0   1   2   3   4 |
+[war_machines_PhaseB]          ---     --- --- ---         
+[war_machines_PhaseB] |   |                   |           |
+[war_machines_PhaseB]          ---         ---     ---     
+[war_machines_PhaseB] |   |           |           |       |
+[war_machines_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[war_machines_PhaseB] 6 shortest paths found!
+[war_machines_PhaseB] Finding shortest path with least turns...
+[war_machines_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[war_machines_PhaseB] | v   15  14  13| 10  9   8   7   6 |
+[war_machines_PhaseB]      ---                 ---         
+[war_machines_PhaseB] |           | 12  11    |   |     5 |
+[war_machines_PhaseB]  ---             --- ---     ---     
+[war_machines_PhaseB] |       |   |   | 0   1   2   3   4 |
+[war_machines_PhaseB]          ---     --- --- ---         
+[war_machines_PhaseB] |   |                   |           |
+[war_machines_PhaseB]          ---         ---     ---     
+[war_machines_PhaseB] |   |           |           |       |
+[war_machines_PhaseB]  --- --- --- --- --- --- --- --- --- 
+[war_machines_PhaseB] Shortest path with least turns found!
+[war_machines_PhaseB] Path Plan (23 steps): 00SLFFFRFLFLFRFFFFRFFRFFFF
+[war_machines_PhaseB] Writing path plan to ../../MotionPlan.txt...
+[war_machines_PhaseB] Path plan written to ../../MotionPlan.txt!
