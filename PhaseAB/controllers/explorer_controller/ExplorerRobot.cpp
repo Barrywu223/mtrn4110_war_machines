@@ -172,8 +172,6 @@ void ExplorerRobot::explore() {
     if (!leftWall()) turnLeft();
     else turnRight();
 
-    map->printPartialMap();
-
     while (updateMap()) {
         PathPlanner *pp = new PathPlanner(map->fullMapString());
         std::string path = pp->findBestPath(); delete pp;
