@@ -3,8 +3,8 @@ WorldInfo {
   coordinateSystem "NUE"
 }
 Viewpoint {
-  orientation -0.9999999999999452 2.6353734250886e-07 2.003422471112327e-07 1.569999214364475
-  position -0.08303840381863269 2.579117951670059 0.03202809612885971
+  orientation 1 0 0 -1.5707996938995747
+  position 0 2.5 0
 }
 TexturedBackground {
 }
@@ -19,9 +19,38 @@ DEF MAZE Group {
     DEF cornerStone Solid {
       translation -0.7425 0.0325 -0.4125
       children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 0.333333 1 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation 0.01 0.033 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
         DEF cornerStone Shape {
           appearance PBRAppearance {
-            baseColor 1 0 1
+            baseColor 0 0 0
             roughness 0.5
           }
           geometry Box {
@@ -38,9 +67,38 @@ DEF MAZE Group {
     DEF cornerStone Solid {
       translation 0.7425 0.0325 -0.4125
       children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 0 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation 0 0.033 0.01
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
         DEF cornerStone Shape {
           appearance PBRAppearance {
-            baseColor 1 0 1
+            baseColor 0 0 0
             roughness 0.5
           }
           geometry Box {
@@ -57,9 +115,38 @@ DEF MAZE Group {
     DEF cornerStone Solid {
       translation 0.7425 0.0325 0.4125
       children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 0 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation -0.01 0.033 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
         DEF cornerStone Shape {
           appearance PBRAppearance {
-            baseColor 1 0 1
+            baseColor 0 0 0
             roughness 0.5
           }
           geometry Box {
@@ -76,9 +163,38 @@ DEF MAZE Group {
     DEF cornerStone Solid {
       translation -0.7425 0.0325 0.4125
       children [
+        DEF cornerMarker Transform {
+          translation 0 0.0325 0
+          children [
+            Shape {
+              appearance PBRAppearance {
+                baseColor 1 0 1
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.02
+              }
+            }
+          ]
+        }
+        DEF cornerMarkerInner Transform {
+          translation 0 0.033 -0.01
+          children [
+            Shape {
+              appearance PBRAppearance {
+                metalness 0
+              }
+              geometry Cylinder {
+                height 0.001
+                radius 0.005
+              }
+            }
+          ]
+        }
         DEF cornerStone Shape {
           appearance PBRAppearance {
-            baseColor 1 0 1
+            baseColor 0 0 0
             roughness 0.5
           }
           geometry Box {
@@ -466,19 +582,16 @@ DEF MAZE Group {
     }
   ]
 }
-DEF z5211399 E-puck {
-  translation -0.66 0 -0.330001
-  rotation 0 1 0 -3.1415853071795863
+DEF war_machine E-puck {
+  translation -0.66 0 -0.33
+  rotation 0 1 0 3.141592653589793
   controller "explorer_controller"
-  camera_width 320
-  camera_height 240
   turretSlot [
     Compass {
     }
-    HingeJoint {
-    }
     DistanceSensor {
-      translation 0.0365 -0.0085 -0.01
+      translation 0 -0.0085 -0.045
+      rotation 0 1 0 1.57
       children [
         DEF sensor Shape {
           appearance PBRAppearance {
@@ -489,7 +602,7 @@ DEF z5211399 E-puck {
           }
         }
       ]
-      name "ds_right"
+      name "ds_front"
       boundingObject USE sensor
       physics Physics {
       }
@@ -513,8 +626,7 @@ DEF z5211399 E-puck {
       }
     }
     DistanceSensor {
-      translation 0 -0.0085 -0.045
-      rotation 0 1 0 1.57
+      translation 0.0365 -0.0085 -0.01
       children [
         DEF sensor Shape {
           appearance PBRAppearance {
@@ -525,7 +637,7 @@ DEF z5211399 E-puck {
           }
         }
       ]
-      name "ds_front"
+      name "ds_right"
       boundingObject USE sensor
       physics Physics {
       }
